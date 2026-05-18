@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ProyectoFinal</string>
+
+
+    <string name="titulo">Inicio Sesión</string>
+    <string name="ingresaEmail">Ingresa tu Email</string>
+    <string name="emailTexto">Email</string>
+    <string name="ingresaContrasena">Ingresa tu contraseña</string>
+    <string name="contrasenaTexto">Contraseña</string>
+    <string name="logout">Logout</string>
+</resources>
