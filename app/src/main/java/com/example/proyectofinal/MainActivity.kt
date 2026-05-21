@@ -3,6 +3,7 @@ package com.example.proyectofinal
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -98,16 +99,16 @@ class MainActivity : AppCompatActivity() {
                     // SI EXISTE EL QR
                     if (snapshot.exists()) {
 
-                        val estatus = snapshot.child("estatus")
+                        val status = snapshot.child("status")
                             .getValue(String::class.java)
 
                         // SI ESTÁ GENERADO
-                        if (estatus == "generado") {
+                        if (status == "generado") {
 
                             // CAMBIAR ESTATUS
                             database.child("claves")
                                 .child(codigoQR)
-                                .child("estatus")
+                                .child("status")
                                 .setValue("utilizado")
 
                             // ACTUALIZAR FECHA DE USO
@@ -121,10 +122,12 @@ class MainActivity : AppCompatActivity() {
                                 "Buen viaje",
                                 Toast.LENGTH_LONG
                             ).show()
+
+                            findViewById<TextView>(R.id.mensaje).setText("QR leiod correctamente, buen viaje");
                         }
 
                         // SI YA FUE UTILIZADO
-                        else if (estatus == "utilizado") {
+                        else if (status == "utilizado") {
 
                             Toast.makeText(
                                 this@MainActivity,

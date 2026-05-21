@@ -23,21 +23,11 @@
             android:text="Leer qr" />
 
         <TextView
-            android:id="@+id/claves"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="50px"
-            android:text="Claves Leidas:"
-            android:textSize="16sp" />
-
-        <TextView
             android:id="@+id/mensaje"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingTop="50px"
-            android:text="Mensaje:"
             android:textSize="16sp" />
 
     </LinearLayout>
