@@ -18,6 +18,7 @@ import com.google.firebase.database.ValueEventListener
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
+import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+        database = FirebaseDatabase.getInstance().reference
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 
@@ -62,16 +64,14 @@ class MainActivity : AppCompatActivity() {
             leerQR()
         }
 
+        contador(0)
+
         val logout = findViewById<FloatingActionButton>(R.id.logout)
-
         logout.setOnClickListener {
-
             FirebaseAuth.getInstance().signOut()
-
             startActivity(
                 Intent(this, Login::class.java)
             )
-
             finish()
         }
     }
@@ -96,22 +96,18 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onDataChange(snapshot: DataSnapshot) {
 
-                    // SI EXISTE EL QR
                     if (snapshot.exists()) {
 
                         val status = snapshot.child("status")
                             .getValue(String::class.java)
 
-                        // SI ESTÁ GENERADO
                         if (status == "generado") {
 
-                            // CAMBIAR ESTATUS
                             database.child("claves")
                                 .child(codigoQR)
                                 .child("status")
                                 .setValue("utilizado")
 
-                            // ACTUALIZAR FECHA DE USO
                             database.child("claves")
                                 .child(codigoQR)
                                 .child("fechaUso")
@@ -123,10 +119,11 @@ class MainActivity : AppCompatActivity() {
                                 Toast.LENGTH_LONG
                             ).show()
 
-                            findViewById<TextView>(R.id.mensaje).setText("QR leiod correctamente, buen viaje");
+                            findViewById<TextView>(R.id.mensaje).setText("QR leido correctamente, buen viaje");
+
+                            contador(1);
                         }
 
-                        // SI YA FUE UTILIZADO
                         else if (status == "utilizado") {
 
                             Toast.makeText(
@@ -155,5 +152,33 @@ class MainActivity : AppCompatActivity() {
                     ).show()
                 }
             })
+    }
+
+    fun contador(flag: Int) {
+
+        if (flag==1) {
+            val contadorRef =
+                database.child("contadorQR").child("total")
+
+            contadorRef.get().addOnSuccessListener { snapshot ->
+
+                val totalActual =
+                    snapshot.getValue(Int::class.java) ?: 0
+
+                contadorRef.setValue(totalActual + 1)
+            }
+        }
+        else{
+            val contadorRef =
+                database.child("contadorQR").child("total")
+
+            contadorRef.get().addOnSuccessListener { snapshot ->
+
+                val totalActual =
+                    snapshot.getValue(Int::class.java) ?: 0
+
+                findViewById<TextView>(R.id.numero).text = "$totalActual"
+            }
+        }
     }
 }
