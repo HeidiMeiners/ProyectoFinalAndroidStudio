@@ -156,49 +156,38 @@ class MainActivity : AppCompatActivity() {
 
     fun contador(flag: Int) {
 
-        val contadorRef = database.child("torniquetes").child("torniquete_1").child("lecturas")
-
-        if (flag == 1) {
-
-            contadorRef.runTransaction(object : com.google.firebase.database.Transaction.Handler {
-
-                override fun doTransaction(
-                    currentData: com.google.firebase.database.MutableData
-                ): com.google.firebase.database.Transaction.Result {
-
-                    var value = currentData.getValue(Int::class.java) ?: 0
-
-                    value++
-
-                    currentData.value = value
-
-                    return com.google.firebase.database.Transaction.success(currentData)
-                }
-
-                override fun onComplete(
-                    error: DatabaseError?,
-                    committed: Boolean,
-                    currentData: DataSnapshot?
-                ) {
-
-                    val nuevoTotal =
-                        currentData?.getValue(Int::class.java) ?: 0
-
-                    findViewById<TextView>(R.id.numero).text =
-                        "$nuevoTotal"
-                }
-            })
-        }
-
-        else {
+        if (flag==1) {
+            val contadorRef = database.child("torniquetes")
+                .child("torniquete_1")
+                .child("lecturas")
 
             contadorRef.get().addOnSuccessListener { snapshot ->
 
                 val totalActual =
                     snapshot.getValue(Int::class.java) ?: 0
 
-                findViewById<TextView>(R.id.numero).text =
-                    "$totalActual"
+                contadorRef.setValue(totalActual + 1)
+
+                contadorRef.get().addOnSuccessListener { snapshot ->
+
+                    val totalActual =
+                        snapshot.getValue(Int::class.java) ?: 0
+
+                    findViewById<TextView>(R.id.numero).text = "$totalActual"
+                }
+            }
+        }
+        else{
+            val contadorRef = database.child("torniquetes")
+                .child("torniquete_1")
+                .child("lecturas")
+
+            contadorRef.get().addOnSuccessListener { snapshot ->
+
+                val totalActual =
+                    snapshot.getValue(Int::class.java) ?: 0
+
+                findViewById<TextView>(R.id.numero).text = "$totalActual"
             }
         }
     }
