@@ -21,7 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Leer qr" />
+            android:text="Leer qr"
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,8 +34,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="50px"
                 android:gravity="center"
                 android:paddingTop="50px"
+                android:paddingEnd="50px"
                 android:textSize="16sp" />
 
             <TextView
@@ -43,14 +46,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:text="Torniquetes abiertos: " />
+                android:text="Torniquetes abiertos: "
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/numero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textSize="20sp" />
         </LinearLayout>
 
     </LinearLayout>
